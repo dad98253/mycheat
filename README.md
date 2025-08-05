@@ -9,4 +9,4 @@ sudo apt install libfcgi-dev
 
 The POST and cgi output is optimized for use with a particular cell phone. You may need to tweak font and widget sizes for your own preferences.
 
-This version uses a very primitive approach to performing spell checking and will have a noticeably slow respondence time on older server hardware. In my case, I have limited the number of characters that can be input to a maximum of 8. If you have a nice fast server, you can likely increase this
+This version uses a very primitive approach to performing spell checking and will have a noticeably slow response time on older server hardware. In my case, I have limited the number of characters that can be input to a maximum of 8. If you have a nice fast server, you can likely increase this.
