@@ -78,8 +78,6 @@ int main(void) {
 						sprintf(command,
 								"permute -m 3 %s 2>/dev/null |sort|uniq",
 								letters);
-						//                    sprintf(command, "permute -m 3 %s 2>/dev/null |sort|uniq>in.txt; aspell list < in.txt > out.txt; comm -23 in.txt out.txt 2>/dev/null; rm in.txt out.txt", letters);
-						//                    sprintf(command, "whoami");
 						fp = popen(command, "r"); // "r" for reading the command's output
 						if (fp == NULL) {
 							perror("Failed to run command");
@@ -95,8 +93,6 @@ int main(void) {
 								if (*(buffer + line_len - 1) == 0xa)
 									*(buffer + line_len - 1) = 0;
 							} // strip off the line feed
-							// Reallocate output_string to accommodate new line
-							//        output_string = realloc(output_string, output_len + line_len + 1);
 							output_string = (char*) malloc(line_len + 1);
 							if (output_string == NULL) {
 								perror("Memory allocation failed");
@@ -104,12 +100,10 @@ int main(void) {
 										"<h1>Memory allocation failed</h1>\n");
 								exit(EXIT_FAILURE);
 							}
-							//        strcpy(output_string + output_len, buffer); // Append the line
 							strcpy(output_string, buffer); // Append the line
 							output_len += line_len;
 							words[i] = output_string;
 							i++;
-							//        FCGI_printf("<h1>read %i characters: \"%s\"</h1>\n", line_len, output_string);
 						}
 						pclose(fp);
 
@@ -129,11 +123,6 @@ int main(void) {
 								} else {
 									//                        FCGI_printf("<h1>COMMAND: %s</h1>\n", command);
 								}
-
-								/*while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-								 size_t line_len = strlen(buffer);
-								 FCGI_printf("<h1>returned %li characters: %s</h1>\n", line_len, buffer);
-								 }*/
 
 								if (fgets(buffer, sizeof(buffer), fp) == NULL) {
 									//                        FCGI_printf("<h1>%s is a word</h1>\n", output_string);
@@ -166,8 +155,6 @@ int main(void) {
 		}
 
 		FCGI_printf("</body></html>\n");
-
-		//        FCGI_printf("<!doctype><html><body>Hola mundo from fastcgi with lighttpd!</body></html>\n");
 	}
 	return EXIT_SUCCESS;
 }
