@@ -1,0 +1,48 @@
+<head>
+    <title>Sayang's cheat sheet</title>
+<style>
+  html {
+    font-size: 26px; /* Define a base font size for the root element */
+  }
+
+  /* Style for the form label */
+  .form-label {
+    font-size: 1.2rem; /* 1.2 times the root font size (e.g., 19.2px) */
+    font-weight: bold;
+    display: block; /* Ensures the label takes its own line */
+    margin-bottom: 0.5rem;
+  }
+    .submit-button {
+	min-width: 8rem;
+        min-height: 2.5rem;
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        background-color: #4CAF50; /* Green */
+        color: white;
+	border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    html {
+      font-size: 64px; /* Reduce base font size for smaller screens */
+    }
+    .form-label {
+      font-size: 2.1rem; /* Adjust label font size relative to new root font size */
+    }
+  }
+    input[type="text"] {
+      font-size: 96px;
+    }
+</style>
+</head>
+<body>
+    <form method="POST" action="/cgi-bin/mycheat.fcgi">
+        <label for="letters">Enter your letters:</label><br>
+        <input type="text" id="letters" name="letters"><br><br>
+        <input type="submit" value="Submit" class="submit-button">
+    </form>
+</body>
+</html>
