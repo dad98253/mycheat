@@ -93,7 +93,7 @@ int main(void) {
 						}
 						// find all permutations taken r at a time where r goes from minWordSize to maxWordSize
 						// first determin how many to expect
-						for (int m = 3; m <= n; m++) {
+						for (int m = (int)minWordSize; m <= n; m++) {
 							WordListSize += Pnm(n, m);
 						}
 						Wordlist = (char**) malloc(
@@ -104,9 +104,9 @@ int main(void) {
 							FindPermutations(str3, n, r, 0, result);
 						}
 						// now, put the list in alphabetical order
-						SortWords(Wordlist, WordListSize);
+						SortWords(Wordlist, NumWordsInList);
 						// and eliminate dupes
-						DedupeWords(Wordlist, &WordListSize);
+						DedupeWords(Wordlist, &NumWordsInList);
 						// now check the spelling of each word in the list. If it appears in the dictionary, print it out.
 						// Create a config
 						AspellConfig *config = new_aspell_config();
@@ -122,7 +122,7 @@ int main(void) {
 						// Cast to AspellSpeller after successful creation
 						AspellSpeller *speller = to_aspell_speller(
 								possible_err);
-						for (long unsigned int m = 0; m < WordListSize; m++) {
+						for (long unsigned int m = 0; m < NumWordsInList; m++) {
 							// Check if the word is correctly spelled
 							int correct = aspell_speller_check(speller,
 									Wordlist[m], strlen(Wordlist[m]));
@@ -170,7 +170,7 @@ int DedupeWords(char* lines[], long unsigned int* count) {
 	if (*count < 2)
 		return (*count);
 	for (long unsigned int i = 0; i < (*count - 1); i++) {
-		if (strcmp(lines[i], lines[i + 1]) == 0) {
+		while ( (i < (*count - 1)) && (strcmp(lines[i], lines[i + 1]) == 0) ) {
 			// a dupe is found, delete it, move everyone up one, and decrement count
 			free(lines[i + 1]);
 			if (i < (*count + 1)) { // check for last word in list
