@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <aspell.h>
+#include <ctype.h>
 #define IN_MAIN
 #include "permute.h"
 
@@ -13,6 +14,7 @@
 int CompareString(const void *str1, const void *str2);
 void SortWords(char* lines[], int count);
 int DedupeWords(char* lines[], long unsigned int* count);
+void toUppercase(char *str);
 
 int main(void) {
 	char *data;
@@ -72,13 +74,14 @@ int main(void) {
 							strcpy(letters, name_start);
 						}
 						FCGI_printf("<h1>Letters = %s</h1>\n", letters);
-						if ((strlen(letters) < 3) || (strlen(letters) > 8)) {
+						if ((strlen(letters) < minWordSize) || (strlen(letters) > maxWordSize)) {
 							perror("Bad input string");
 							FCGI_printf(
-									"<h1>Bad input: the number of letters must be between 3 and 8</h1>\n");
+									"<h1>Bad input: the number of letters must be between %i and %i</h1>\n",minWordSize,maxWordSize);
 							exit(EXIT_FAILURE);
 						}
 						str2 = letters;
+						toUppercase(str2);
 						n = strlen(str2);
 						str3 = (char*) malloc(n + 2);
 						result = (char*) calloc(n + 2, 1);
@@ -182,4 +185,12 @@ int DedupeWords(char* lines[], long unsigned int* count) {
 		}
 	}
 	return (*count);
+}
+
+void toUppercase(char *str) {
+    int i = 0;
+    while (str[i] != '\0') {
+        str[i] = toupper(str[i]);
+        i++;
+    }
 }
