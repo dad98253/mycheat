@@ -1,7 +1,7 @@
 # mycheat
 cgi program to generate a cheat sheet for word scramble games
 
-compile using gcc -o mycheat.fcgi -lfcgi -lm -laspell -O3 -Wall -Wextra -pedantic -std=c11 mycheat.c FindPermutations.c 
+compile using gcc mycheat.c FindPermutations.c -o mycheat.fcgi -lfcgi -lm -laspell -O3 -Wall -Wextra -pedantic -std=c11
 
 Note that the code uses the fast-cgi and aspell libraries. To install the necessary headers and libraries on ubuntu, use:
 
