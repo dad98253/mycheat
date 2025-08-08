@@ -75,7 +75,7 @@ int main(void) {
 						}
 						FCGI_printf("<h1>Letters = %s</h1>\n", letters);
 						if ((strlen(letters) < minWordSize) || (strlen(letters) > maxWordSize)) {
-							perror("Bad input string");
+							FCGI_perror("Bad input string");
 							FCGI_printf(
 									"<h1>Bad input: the number of letters must be between %i and %i</h1>\n",minWordSize,maxWordSize);
 							exit(EXIT_FAILURE);
@@ -136,6 +136,8 @@ int main(void) {
 							free(Wordlist[m]);
 						}
 						// all done...
+						delete_aspell_speller(speller);
+						delete_aspell_config(config);
 						free(str3);
 						free(result);
 						free(Wordlist);
@@ -156,6 +158,7 @@ int main(void) {
 
 		FCGI_printf("</body></html>\n");
 	}
+	FCGI_Finish();
 	return EXIT_SUCCESS;
 }
 

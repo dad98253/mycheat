@@ -26,7 +26,7 @@ void FindPermutations(char *str, int n, int r, int start, char *result) {
 		strcpy(*(Wordlist + NumWordsInList), result);
 		NumWordsInList++;
 		if (NumWordsInList > WordListSize) {
-			perror("too many permutations found");
+			FCGI_perror("too many permutations found");
 			FCGI_printf(
 					"<h1>Program failed due to too many permutations found... this is a program bug!</h1>\n");
 			exit(EXIT_FAILURE);
