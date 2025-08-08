@@ -14,6 +14,7 @@
 int CompareString(const void *str1, const void *str2);
 void SortWords(char* lines[], int count);
 int DedupeWords(char* lines[], long unsigned int* count);
+void filter_alphabetic(char *str);
 void toUppercase(char *str);
 
 int main(void) {
@@ -73,6 +74,10 @@ int main(void) {
 						} else {
 							strcpy(letters, name_start);
 						}
+						// remove all non-alphabetic characters
+						filter_alphabetic(letters);
+						// put everything in upper case
+						toUppercase(letters);
 						FCGI_printf("<h1>Letters = %s</h1>\n", letters);
 						if ((strlen(letters) < minWordSize) || (strlen(letters) > maxWordSize)) {
 							FCGI_perror("Bad input string");
@@ -81,7 +86,6 @@ int main(void) {
 							exit(EXIT_FAILURE);
 						}
 						str2 = letters;
-						toUppercase(str2);
 						n = strlen(str2);
 						str3 = (char*) malloc(n + 2);
 						result = (char*) calloc(n + 2, 1);
@@ -190,8 +194,28 @@ int DedupeWords(char* lines[], long unsigned int* count) {
 	return (*count);
 }
 
+void filter_alphabetic(char *str) {
+    if (str == NULL) {
+        return; // Handle null pointer input
+    }
+
+    int i, j;
+    j = 0; // Index for the new string (containing only alphabetic characters)
+
+    for (i = 0; str[i] != '\0'; i++) {
+        if (isalpha((unsigned char)str[i])) { // Check if the character is an alphabet
+            str[j] = str[i]; // Copy alphabetic character to the new position
+            j++;
+        }
+    }
+    str[j] = '\0'; // Null-terminate the modified string
+}
+
 void toUppercase(char *str) {
     int i = 0;
+    if (str == NULL) {
+        return; // Handle null pointer input
+    }
     while (str[i] != '\0') {
         str[i] = toupper(str[i]);
         i++;
