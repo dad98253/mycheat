@@ -88,7 +88,7 @@ which prints every permutation of a string provided by the user.
 
 @command{mycheat} is a fast cgi program that finds the permutations of the characters
 contained in a string and then passes the resulting strings through a spell checker
-to identify which permutations are English words. When intergrated into a web page, 
+to identify which permutations are English words. When integrated into a web page, 
 it allows non-mathematicians to use a classic computer algorithm to find words
 contained in a scrambled string or characters.
 
@@ -129,7 +129,7 @@ ABA
 BAA
 @end example
 
-If such behavior is undesirable, the output may be piped through the unix sort
+If such behavior is undesirable, the output may be piped through the Unix sort
 and uniq commands. In addition, the header line that mycheat outputs is written 
 to stderr. Thus, it can be eliminated by redirecting stderr:
 This is the output of the command @samp{mycheat ABA -m 3 2>/dev/null | sort | uniq}:
@@ -225,9 +225,9 @@ string). Thus, the size of the output grows quickly with increasing string lengt
 There is a hard coded limit on the length of the input string of 15 characters.
 On an Intel i5 processor from 2016, it takes mycheat 34 cpu seconds and 35 seconds wall
 time to just to find the permutations of a 12 character string. This implies that it would take about 27
-hours to find the permutations of a length 15 string. Note that these timings excluse the
+hours to find the permutations of a length 15 string. Note that these timings exclude the
 time that the program needs to look up the string in the spell check dictionary. I.e., the
-actual total wall time will be many times more than this. Thus, I recomend that you keep the
+actual total wall time will be many times more than this. Thus, I recommend that you keep the
 letters to 10 or less. If a user should need to
 use longer strings, download the source and change the definition of MAXSETSIZE.
 
@@ -235,9 +235,12 @@ The application is not multi-threaded. However, the computation in the algorithm
 is roughly equivalent to the cpu time required to do the output. Therefore, large
 problems will likely fully utilize the equivalent of two cores.
 
-The memory requirement for the permutation algorithm is roughly O(n**2)/2, where n is the length of the string. However, to efficiently perform the spell check step, all permutations of the
-letters are stored in memory. The total number of permuted strings will be the sum from m=3 to m=n (where n is the number of characters) of n!/(n-m)! The length of each of these strings
-will be m+1. Thus, the total memory needed to store these strings will be the sum fromo m=3 to m=n of (n!/(n-m)!) x m. Some sample memory requirements as a function of n follow:
+The memory requirement for the permutation algorithm is roughly O(n**2)/2, where n is the length
+of the string. However, to efficiently perform the spell check step, all permutations of the
+letters are stored in memory. The total number of permuted strings will be the sum from m=3 to m=n
+(where n is the number of characters) of n!/(n-m)! The length of each of these strings
+will be m+1. Thus, the total memory needed to store these strings will be the sum from m=3 to m=n
+of (n!/(n-m)!) x m. Some sample memory requirements as a function of n follow:
 
     n          RAM requirement (bytes)
     3          18
@@ -255,12 +258,72 @@ will be m+1. Thus, the total memory needed to store these strings will be the su
    15          49,764,784,608,630
 
 So, by limiting the string length to 10 or less, memory requirements will be less than a
-GigaByte. 
+Gigabyte. 
 
 If duplicate numerical options (@option{-m},
 @option{-x}, and their long-named equivalents) are specified, whichever
 comes last takes precedence. If both @option{-?} and @option{-v} (or their long-named equivalents)
 are specified, whichever comes first takes precedence.
+
+Normally, you will not be invoking mycheat directly as mentioned above. Instead, you will want to
+invoke it from html being served by a web server such as apache or nginx. The following is an
+example of how this might be accomplished. The following will display a form and a submit
+button on a blank page. When the submit button is pressed, whatever is in the form box will
+be sent to the fast cgi program. The scaling used in the example is appropriate for my
+particular cell phone. You will likely need to adjust the font, box, and button size to fit
+your needs:
+
+@example
+<head>
+    <title>Sayang's cheat sheet</title>
+<style>
+  html {
+    font-size: 26px; /* Define a base font size for the root element */
+  }
+
+  /* Style for the form label */
+  .form-label {
+    font-size: 1.2rem; /* 1.2 times the root font size (e.g., 19.2px) */
+    font-weight: bold;
+    display: block; /* Ensures the label takes its own line */
+    margin-bottom: 0.5rem;
+  }
+    .submit-button {
+	min-width: 8rem;
+        min-height: 2.5rem;
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        background-color: #4CAF50; /* Green */
+        color: white;
+	border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    html {
+      font-size: 64px; /* Reduce base font size for smaller screens */
+    }
+    .form-label {
+      font-size: 2.1rem; /* Adjust label font size relative to new root font size */
+    }
+  }
+    input[type="text"] {
+      font-size: 96px;
+    }
+</style>
+</head>
+<body>
+    <form method="POST" action="/cgi-bin/mycheat.fcgi">
+        <label for="letters">Enter your letters:</label><br>
+        <input type="text" id="letters" name="letters"><br><br>
+        <input type="submit" value="Submit" class="submit-button">
+    </form>
+</body>
+</html>
+@end example
+
 
 @node Reporting bugs
 @chapter Reporting bugs
@@ -295,7 +358,6 @@ better to include too much than to leave out something important.
 Patches are welcome; if possible, please make them with @samp{@w{diff -c}}
 and include @file{ChangeLog} entries.  Please follow the existing
 coding style.
-
 
 @node Free Documentation License
 @appendix Mycheat Free Documentation License
