@@ -16,6 +16,7 @@ void SortWords(char* lines[], int count);
 int DedupeWords(char* lines[], long unsigned int* count);
 void filter_alphabetic(char *str);
 void toUppercase(char *str);
+extern void OS_LibShutdown(void);
 
 int main(void) {
 	char *data;
@@ -163,6 +164,7 @@ int main(void) {
 		FCGI_printf("</body></html>\n");
 	}
 	FCGI_Finish();
+	OS_LibShutdown();
 	return EXIT_SUCCESS;
 }
 
