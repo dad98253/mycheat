@@ -142,7 +142,7 @@ BAA
 
 @cindex word game cheat
 
-This is the output of the input @samp{FFERO):
+This is the output of the input @samp{FFERO}:
 
 @example
 Letters = FFERO
@@ -271,24 +271,24 @@ example of how this might be accomplished. The following will display a form and
 button on a blank page. When the submit button is pressed, whatever is in the form box will
 be sent to the fast cgi program. The scaling used in the example is appropriate for my
 particular cell phone. You will likely need to adjust the font, box, and button size to fit
-your needs:
+your needs. The real work takes place in the <body> block near the bottom of the example.
 
 @example
 <head>
     <title>Sayang's cheat sheet</title>
 <style>
-  html {
+  html @{
     font-size: 26px; /* Define a base font size for the root element */
-  }
+  @}
 
   /* Style for the form label */
-  .form-label {
+  .form-label @{
     font-size: 1.2rem; /* 1.2 times the root font size (e.g., 19.2px) */
     font-weight: bold;
     display: block; /* Ensures the label takes its own line */
     margin-bottom: 0.5rem;
-  }
-    .submit-button {
+  @}
+    .submit-button @{
 	min-width: 8rem;
         min-height: 2.5rem;
         font-size: 1.2rem;
@@ -298,20 +298,20 @@ your needs:
 	border: 1px solid #ccc;
         border-radius: 5px;
         cursor: pointer;
-    }
+    @}
 
   /* Media query for smaller screens */
-  @media (max-width: 768px) {
-    html {
+  @@media (max-width: 768px) @{
+    html @{
       font-size: 64px; /* Reduce base font size for smaller screens */
-    }
-    .form-label {
+    @}
+    .form-label @{
       font-size: 2.1rem; /* Adjust label font size relative to new root font size */
-    }
-  }
-    input[type="text"] {
+    @}
+  @}
+    input[type="text"] @{
       font-size: 96px;
-    }
+    @}
 </style>
 </head>
 <body>
