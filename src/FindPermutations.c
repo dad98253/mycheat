@@ -22,7 +22,7 @@ void swap(char *a, char *b) {
 void FindPermutations(char *str, int n, int r, int start, char *result) {
 	if (r == 0) {
 		// add the word to our list
-		*(Wordlist + NumWordsInList) = (char*) malloc(strlen(result + 1));
+		*(Wordlist + NumWordsInList) = (char*) malloc(strlen(result) + 1);
 		strcpy(*(Wordlist + NumWordsInList), result);
 		NumWordsInList++;
 		if (NumWordsInList > WordListSize) {
