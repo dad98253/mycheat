@@ -242,6 +242,7 @@ letters are stored in memory. The total number of permuted strings will be the s
 will be m+1. Thus, the total memory needed to store these strings will be the sum from m=3 to m=n
 of (n!/(n-m)!) x m. Some sample memory requirements as a function of n follow:
 
+@example
     n          RAM requirement (bytes)
     3          18
     4          168
@@ -256,6 +257,7 @@ of (n!/(n-m)!) x m. Some sample memory requirements as a function of n follow:
    13          203,121,569,508
    14          3,080,677,142,088
    15          49,764,784,608,630
+@end example
 
 So, by limiting the string length to 10 or less, memory requirements will be less than a
 Gigabyte. 
