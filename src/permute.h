@@ -31,10 +31,11 @@
 EXTERN long unsigned int minWordSize INT2;
 EXTERN long unsigned int maxWordSize MXSZ;
 EXTERN char** Wordlist PNULL;
-EXTERN long unsigned int WordListSize INT0;
-EXTERN long unsigned int NumWordsInList INT0;
+EXTERN long long unsigned int WordListSize INT0;
+EXTERN long long unsigned int NumWordsInList INT0;
 
 REXTERN void FindPermutations(char *str, int n, int r, int start, char *result);
-REXTERN int Pnm(int n, int m);
+REXTERN long long int Pnm(int n, int m);
+REXTERN long long int factorial (int n);
 
 #endif /* PERMUTE_H_ */

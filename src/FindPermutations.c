@@ -45,13 +45,22 @@ void FindPermutations(char *str, int n, int r, int start, char *result) {
 }
 
 // find the number of permutations P(n,m( = n!/(n-m)!)
-int Pnm(int n, int m) {
+long long int Pnm(int n, int m) {
 	if (m > n)
 		return (-1);
 	if (n < 1 || m < 1)
 		return (-2);
 	if (n > 15)
 		return (-3);
-	return (tgamma(n + 1) / (tgamma(n - m + 1)));
+	return (factorial(n) / (factorial(n - m)));
 }
 
+long long int factorial (int n) {
+	long long int j = 1;
+	if(n) {
+		for (int k=1;k<n+1;k++){
+			j*=(long long int)k;
+		}
+	}
+	return (j);
+}

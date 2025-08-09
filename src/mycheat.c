@@ -12,8 +12,8 @@
 #define COMMAND_SIZE 1000
 
 int CompareString(const void *str1, const void *str2);
-void SortWords(char* lines[], int count);
-int DedupeWords(char* lines[], long unsigned int* count);
+void SortWords(char* lines[], long long int count);
+int DedupeWords(char* lines[], long long unsigned int* count);
 void filter_alphabetic(char *str);
 void toUppercase(char *str);
 extern void OS_LibShutdown(void);
@@ -130,7 +130,7 @@ int main(void) {
 						// Cast to AspellSpeller after successful creation
 						AspellSpeller *speller = to_aspell_speller(
 								possible_err);
-						for (long unsigned int m = 0; m < NumWordsInList; m++) {
+						for (long long unsigned int m = 0; m < NumWordsInList; m++) {
 							// Check if the word is correctly spelled
 							int correct = aspell_speller_check(speller,
 									Wordlist[m], strlen(Wordlist[m]));
@@ -174,26 +174,38 @@ int CompareString(const void *str1, const void *str2) {
 	return strcmp(*pp1, *pp2);
 }
 
-void SortWords(char* lines[], int count) {
+void SortWords(char* lines[], long long int count) {
 	qsort(lines, count, sizeof(*lines), CompareString);
 }
 
-int DedupeWords(char* lines[], long unsigned int* count) {
+int DedupeWords(char* lines[], long long unsigned int* count) {
 	if (*count < 2)
 		return (*count);
-	for (long unsigned int i = 0; i < (*count - 1); i++) {
-		while ( (i < (*count - 1)) && (strcmp(lines[i], lines[i + 1]) == 0) ) {
-			// a dupe is found, delete it, move everyone up one, and decrement count
-			free(lines[i + 1]);
-			if (i < (*count + 1)) { // check for last word in list
-				for (long unsigned int j = i + 1; j < (*count); j++) {
-					lines[j] = lines[j + 1];
-				}
-				(*count)--;
-			}
+	long long unsigned int* next;
+	long long unsigned int i;
+	next = (long long unsigned int*)malloc(sizeof(long long unsigned int) * (*count));
+	for ( i = 0; i < (*count - 1); i++) next[i] = i + 1; // create a linked list so that we can save work garbage collecting
+	next[*count -1] = 0;
+	i = 0;
+	while ( next[i] != 0 ) { // loop until we find the end of the list
+		while ( (next[i] != 0) && (strcmp(lines[i], lines[next[i]]) == 0) ) { // check for the last element - we don't want to compare it
+			// a dupe is found, delete it and move everyone up one
+			free(lines[next[i]]);
+			lines[next[i]] = NULL;
+			next[i] = next[next[i]];
 		}
+		i = next[i]; // move on to the next (undeleted) element
 	}
-	return (*count);
+	i = 0; // we are all de-duped; now we need to reassemble the array
+	long long unsigned int newcount = 1;
+	while ( next[i] != 0 ) {
+		lines[newcount] = lines[next[i]];
+		i = next[i];
+		newcount++;
+	}
+	free(next); // don't forget to free up the linked list that we created above
+	*count = newcount;
+	return (newcount);
 }
 
 void filter_alphabetic(char *str) {
