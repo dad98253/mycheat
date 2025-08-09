@@ -226,14 +226,24 @@ There is a hard coded limit on the length of the input string of 15 characters.
 On an Intel i5 processor from 2016, it takes mycheat 34 cpu seconds and 35 seconds wall
 time to just to find the permutations of a 12 character string. This implies that it would take about 27
 hours to find the permutations of a length 15 string. Note that these timings exclude the
-time that the program needs to look up the string in the spell check dictionary. I.e., the
-actual total wall time will be many times more than this. Thus, I recommend that you keep the
-letters to 10 or less. If a user should need to
-use longer strings, download the source and change the definition of MAXSETSIZE.
+time that the program needs to sort the permutations, eliminate duplicate entries, and look up the 
+strings in the spell check dictionary. I.e., the
+actual total wall time will be many times more than this. For long strings, the sort takes the
+majority or the cpu and wall time. On the machine mentioned above, it will take up to ten
+minutes to perform the permutation sort for a 12 character string (it varies depending
+on the number of duplicate letters in the string). Thus, I recommend that you keep the number of
+letters to 10 or less. If you should need to
+use longer strings, I recommend using the permute utility (available at 
+https://github.com/dad98253/permute) and pipe its output into sort and aspell similar to the following:
 
-The application is not multi-threaded. However, the computation in the algorithm
-is roughly equivalent to the cpu time required to do the output. Therefore, large
-problems will likely fully utilize the equivalent of two cores.
+@example
+permute -m 3 MYLONGSTRING |sort --parallel=4 --unique --buffer-size=16G >/tmp/in.txt; comm -23 /tmp/in.txt <(aspell list < /tmp/in.txt) 2>/dev/null
+@end example
+
+were MYLONGSTRING is the string that you want to unscramble. Set the the --parallel parameter
+equal to the number of cores on your cpu and set the --buffer-size parameter to about half
+the size of your installed RAM. The GNU sort utility is multi-threaded and uses a poly-phase
+merge algorithm. It should run much faster than the single thread quick-sort used in mycheat.
 
 The memory requirement for the permutation algorithm is roughly O(n**2)/2, where n is the length
 of the string. However, to efficiently perform the spell check step, all permutations of the
@@ -262,16 +272,16 @@ of (n!/(n-m)!) x m. Some sample memory requirements as a function of n follow:
 So, by limiting the string length to 10 or less, memory requirements will be less than a
 Gigabyte. 
 
-If duplicate numerical options (@option{-m},
+Regarding mycheat arguments: If duplicate numerical options (@option{-m},
 @option{-x}, and their long-named equivalents) are specified, whichever
 comes last takes precedence. If both @option{-?} and @option{-v} (or their long-named equivalents)
 are specified, whichever comes first takes precedence.
 
 Normally, you will not be invoking mycheat directly as mentioned above. Instead, you will want to
-invoke it from html being served by a web server such as apache or nginx. The following is an
-example of how this might be accomplished. The following will display a form and a submit
+invoke it from html being served by a web server such as apache or nginx. The following is
+example html of how this might be accomplished. The following will display a form and a submit
 button on a blank page. When the submit button is pressed, whatever is in the form box will
-be sent to the fast cgi program. The scaling used in the example is appropriate for my
+be sent to the fast cgi (mycheat.fcgi) program. The scaling used in the example is appropriate for my
 particular cell phone. You will likely need to adjust the font, box, and button size to fit
 your needs. The real work takes place in the <body> block near the bottom of the example.
 
